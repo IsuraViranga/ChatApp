@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        fontFamily: "OpenSans",
         primaryColor: const Color(0xFF7B53FF),
         hintColor: const Color(0xFF128C7E),
       ),
