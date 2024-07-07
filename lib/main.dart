@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Screens/HomeScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,11 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: Container(
-          color: Colors.white,
-        ),
+      theme: ThemeData(
+        primaryColor: const Color(0xFF7B53FF),
+        hintColor: const Color(0xFF128C7E),
       ),
+      home:const HomeScreen()
     );
   }
 }
