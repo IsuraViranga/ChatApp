@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         controller: _controller,
         children: const [
           Text("camera"),
-          chatPage(),
+          ChatPage(),
           Text("status"),
           Text("calls")
         ],

@@ -1,13 +1,14 @@
+import 'package:chatapp/customUI/CustomCard.dart';
 import 'package:flutter/material.dart';
 
-class chatPage extends StatefulWidget {
-  const chatPage({Key? key}) : super(key: key);
+class ChatPage extends StatefulWidget {
+  const ChatPage({Key? key}) : super(key: key);
 
   @override
-  State<chatPage> createState() => _chatPageState();
+  State<ChatPage> createState() => _ChatPageState();
 }
 
-class _chatPageState extends State<chatPage> {
+class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,8 +16,18 @@ class _chatPageState extends State<chatPage> {
           onPressed: () {},
           child: const Icon(Icons.chat),
           backgroundColor:const Color(0xFF035A45),
-      )
-      ,
+      ),
+      body:ListView(
+        children: const [
+            CustomCard(),
+            CustomCard(),
+            CustomCard(),
+            CustomCard(),
+            CustomCard(),
+            CustomCard(),
+            CustomCard(),
+        ],
+      ),
     );
   }
 }
