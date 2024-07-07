@@ -1,13 +1,18 @@
+import 'package:chatapp/Screens/individualPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../Model/ChatModel.dart';
 
 class CustomCard extends StatelessWidget {
-  const CustomCard({Key? key}) : super(key: key);
+  final ChatModel chatmodel;
+  const CustomCard({Key? key , required this.chatmodel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){},
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>IndividualPage()));
+      },
       child: Column(
         children: [
           ListTile(
@@ -15,33 +20,33 @@ class CustomCard extends StatelessWidget {
               radius: 30,
               backgroundColor: Colors.blueGrey,
               child: SvgPicture.asset(
-                  "assets/person.svg",
+                  chatmodel.isGroup? "assets/groups.svg" :"assets/person.svg",
                   color: Colors.white,
                   height:40,
               ),
             ),
-            title:const Text(
-                "Amma",
-                style:TextStyle(
+            title:Text(
+                chatmodel.name,
+                style:const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold
                 ) ,
             ),
-            subtitle: const Row(
+            subtitle:Row(
               children: [
-                Icon(Icons.done_all),
-                SizedBox(
+                const Icon(Icons.done_all),
+                const SizedBox(
                   width: 3,
                 ),
                 Text(
-                    "hello amma",
-                     style: TextStyle(
+                     chatmodel.currentMessage,
+                     style: const TextStyle(
                        fontSize: 13
                      ),
                 )
               ],
             ),
-            trailing: const Text("18.4"),
+            trailing:Text(chatmodel.time),
           ),
           const Padding(
             padding: EdgeInsets.only(left: 80,right: 20),
