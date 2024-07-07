@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../Pages/chatpage.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -23,9 +25,37 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         backgroundColor:const Color(0xFF035A45),
         actions: [
           IconButton(onPressed: (){}, icon:const Icon(Icons.search)),
-          IconButton(onPressed: (){}, icon:const Icon(Icons.more_vert)),
+          PopupMenuButton(
+              onSelected:(value){
+                print(value);
+              } ,
+              itemBuilder: (BuildContext context){
+            return const[
+              PopupMenuItem(
+                  value:"New group",
+                  child: Text("New group"),
+              ),
+              PopupMenuItem(
+                  value:"New broadcast",
+                  child: Text("New broadcast"),
+              ),
+              PopupMenuItem(
+                  value:"ChatMe web",
+                  child: Text("ChatMe web"),
+              ),
+              PopupMenuItem(
+                  value:"Starred messages",
+                  child: Text("Starred messages"),
+              ),
+              PopupMenuItem(
+                  value:"Settings",
+                  child: Text("Settings"),
+              )
+            ];
+          }),
         ],
         bottom: TabBar(
+          indicatorColor: Colors.white,
           controller: _controller,
           tabs: const [
             Tab(
@@ -47,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         controller: _controller,
         children: const [
           Text("camera"),
-          Text("chats"),
+          chatPage(),
           Text("status"),
           Text("calls")
         ],
