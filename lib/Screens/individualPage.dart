@@ -1,4 +1,5 @@
 import 'package:chatapp/Model/ChatModel.dart';
+import 'package:chatapp/customUI/ReplyCard.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -127,11 +128,25 @@ class _IndividualPageState extends State<IndividualPage> {
                 height: MediaQuery.of(context).size.height,
                 child: Stack(
                   children: [
-                    ListView(
-                      shrinkWrap: true,
-                      children: [
-                        OwnMessage(),
-                      ],
+                    Container(
+                      height: MediaQuery.of(context).size.height-145,
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          OwnMessage(),
+                          ReplyCard(),
+                          OwnMessage(),
+                          ReplyCard(),
+                          OwnMessage(),
+                          ReplyCard(),
+                          OwnMessage(),
+                          ReplyCard(),
+                          OwnMessage(),
+                          ReplyCard(),
+                          OwnMessage(),
+                          ReplyCard(),
+                        ],
+                      ),
                     ),
                     Align(
                       alignment:Alignment.bottomCenter,
