@@ -3,6 +3,7 @@ import 'package:chatapp/customUI/ReplyCard.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../customUI/OwnMessage.dart';
 
@@ -18,10 +19,12 @@ class _IndividualPageState extends State<IndividualPage> {
   bool show =false;
   FocusNode focusNode =FocusNode();
   TextEditingController _textEditingController =TextEditingController();
+  late IO.Socket socket;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    connect();
     focusNode.addListener(() {
       if(focusNode.hasFocus){
        setState(() {
@@ -30,6 +33,17 @@ class _IndividualPageState extends State<IndividualPage> {
       }
     });
   }
+
+  void connect(){
+      socket=IO.io("http://192.168.1.14:5000",<String,dynamic>{
+        "transports":["websocket"],
+        "autoConnect":false
+      });
+      socket.connect();
+      socket.onConnect((data) => print('connected'));
+      socket.emit("/test","hello isura");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(

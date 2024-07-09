@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-
+import '../Model/ChatModel.dart';
 import '../Pages/chatpage.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final List<ChatModel> chatmodels;
+  const HomeScreen({Key? key,required this.chatmodels}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -75,9 +76,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
       body:TabBarView(
         controller: _controller,
-        children: const [
+        children:[
           Text("camera"),
-          ChatPage(),
+          ChatPage(
+              chatmodel:widget.chatmodels
+          ),
           Text("status"),
           Text("calls")
         ],

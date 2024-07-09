@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Screens/HomeScreen.dart';
+import 'Screens/loginScreen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color(0xFF7B53FF),
         hintColor: const Color(0xFF128C7E),
       ),
-      home:const HomeScreen()
+      home:const LoginPage()
     );
   }
 }

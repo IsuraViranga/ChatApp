@@ -4,6 +4,7 @@ class ChatModel {
   String icon;
   String currentMessage;
   bool isGroup;
+  int id;
 
   ChatModel({
     required this.name,
@@ -11,5 +12,6 @@ class ChatModel {
     required this.icon,
     required this.currentMessage,
     required this.isGroup,
+    required this.id
   });
 }
