@@ -40,6 +40,13 @@ class _IndividualPageState extends State<IndividualPage> {
     });
   }
 
+  @override
+  void dispose() {
+    focusNode.dispose();
+    socket.dispose();
+    super.dispose();
+  }
+
   void connect(){
       socket=IO.io("http://192.168.1.14:5000",<String,dynamic>{
         "transports":["websocket"],
@@ -68,10 +75,21 @@ class _IndividualPageState extends State<IndividualPage> {
   }
 
   void setMessage(String message,String type){
+    if (!mounted) return;
+
     MessageModel messagemodel =MessageModel(message: message, type: type,time: DateTime.now().toString().substring(10,16));
-    scrollController.animateTo(scrollController.position.maxScrollExtent, duration: Duration(microseconds: 300), curve:Curves.easeOut);
     setState(() {
       messageModel.add(messagemodel);
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (scrollController.hasClients) {
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
     });
   }
   
@@ -178,11 +196,8 @@ class _IndividualPageState extends State<IndividualPage> {
                       child: ListView.builder(
                         controller: scrollController,
                         shrinkWrap: true,
-                        itemCount: messageModel.length+1,
+                        itemCount: messageModel.length,
                         itemBuilder: (context,index){
-                          if(index==messageModel.length){
-                            return Container(height: 70,);
-                          }
                           if(messageModel[index].type=="source"){
                             return OwnMessage(
                               message :messageModel[index].message,
@@ -200,7 +215,6 @@ class _IndividualPageState extends State<IndividualPage> {
                     Align(
                       alignment:Alignment.bottomCenter,
                       child: Container(
-                        height: 70,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -320,11 +334,13 @@ class _IndividualPageState extends State<IndividualPage> {
     );
   }
   Widget emojiSelect(){
-    return EmojiPicker(onEmojiSelected: (category, emoji){
-      setState(() {
-        _textEditingController.text=_textEditingController.text + emoji.emoji;
-      });
-    },);
+    return EmojiPicker(
+      onEmojiSelected: (category, emoji){
+        setState(() {
+          _textEditingController.text=_textEditingController.text + emoji.emoji;
+        });
+      },
+    );
   }
 
   Widget bottomSheet() {
