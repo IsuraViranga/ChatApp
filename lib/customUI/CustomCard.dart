@@ -5,13 +5,15 @@ import '../Model/ChatModel.dart';
 
 class CustomCard extends StatelessWidget {
   final ChatModel chatmodel;
-  const CustomCard({Key? key , required this.chatmodel}) : super(key: key);
+  final ChatModel sourceChat;
+  const CustomCard({Key? key , required this.chatmodel,required this.sourceChat}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context)=>IndividualPage(
+            sourceChat:sourceChat,
             chatmodel:chatmodel
         )));
       },

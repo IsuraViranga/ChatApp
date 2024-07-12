@@ -36,7 +36,8 @@ class _LoginPageState extends State<LoginPage> {
               onTap: (){
                 sourceChat=chatmodels.removeAt(index);
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder)=>HomeScreen(
-                    chatmodels:chatmodels
+                    chatmodels:chatmodels,
+                    sourceChat:sourceChat
                 )));
               },
                 child: Buttoncard(chatmodel:chatmodels[index]))

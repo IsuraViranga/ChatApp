@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import '../Model/ChatModel.dart';
 
 class ChatPage extends StatefulWidget {
-   late List<ChatModel> chatmodel;
-   ChatPage({Key? key,required this.chatmodel}) : super(key: key);
+   final List<ChatModel> chatmodel;
+   final ChatModel sourceChat;
+   const ChatPage({Key? key,required this.chatmodel,required this.sourceChat}) : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -22,7 +23,7 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body:ListView.builder(
           itemCount:widget.chatmodel.length,
-          itemBuilder:(context,index)=>CustomCard(chatmodel:widget.chatmodel[index])
+          itemBuilder:(context,index)=>CustomCard(chatmodel:widget.chatmodel[index],sourceChat:widget.sourceChat)
       )
     );
   }

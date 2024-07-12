@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class OwnMessage extends StatelessWidget {
-  const OwnMessage({Key? key}) : super(key: key);
+  final String message;
+  final String time;
+  const OwnMessage({Key? key,required this.message,required this.time}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class OwnMessage extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 10,right: 50,top: 5,bottom: 22),
-                  child: Text("Heyy bubu  ubibubjb ibibib",style: TextStyle(
+                  child: Text(message,style: TextStyle(
                     fontSize: 16
                   ),),
                 ),
@@ -29,7 +31,7 @@ class OwnMessage extends StatelessWidget {
                   right: 10,
                   child: Row(
                     children: [
-                      Text("20.59",style: TextStyle(
+                      Text(time,style: TextStyle(
                         fontSize: 13,
                         color: Colors.grey[800]
                       ),),

@@ -4,7 +4,8 @@ import '../Pages/chatpage.dart';
 
 class HomeScreen extends StatefulWidget {
   final List<ChatModel> chatmodels;
-  const HomeScreen({Key? key,required this.chatmodels}) : super(key: key);
+  final ChatModel sourceChat;
+  const HomeScreen({Key? key,required this.chatmodels,required this.sourceChat}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -79,7 +80,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         children:[
           Text("camera"),
           ChatPage(
-              chatmodel:widget.chatmodels
+              chatmodel:widget.chatmodels,
+              sourceChat:widget.sourceChat
           ),
           Text("status"),
           Text("calls")
