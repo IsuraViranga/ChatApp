@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import '../Model/ChatModel.dart';
 import '../Pages/chatpage.dart';
+import 'package:chatapp/Screens/SerachPage.dart';
 
 class HomeScreen extends StatefulWidget {
   final List<ChatModel> chatmodels;
   final ChatModel sourceChat;
+
   const HomeScreen({Key? key,required this.chatmodels,required this.sourceChat}) : super(key: key);
 
   @override
@@ -13,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   late TabController _controller;
+  
   @override
   void initState() {
     super.initState();
@@ -26,7 +29,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         title:const Text("ChatMe"),
         backgroundColor:const Color(0xFF035A45),
         actions: [
-          IconButton(onPressed: (){}, icon:const Icon(Icons.search)),
+          IconButton(
+              onPressed: (){
+                 setState(() {
+                   Navigator.push(
+                       context,
+                       MaterialPageRoute(builder: (context) => searchPage(
+                           chatmodels:widget.chatmodels,
+                           sourceChat:widget.sourceChat
+                       ))
+                   );
+                 });
+              }, 
+              icon:const Icon(Icons.search)
+          ),
           PopupMenuButton(
               onSelected:(value){
                 print(value);
