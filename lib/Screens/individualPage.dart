@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../Model/MessageModel.dart';
 import '../customUI/OwnMessage.dart';
+import 'package:chatapp/sqliteDatabase/databaseHelper.dart';
 
 class IndividualPage extends StatefulWidget {
   final ChatModel chatmodel;
@@ -25,6 +26,7 @@ class _IndividualPageState extends State<IndividualPage> {
   late IO.Socket socket;
   List<MessageModel> messageModel=[];
   ScrollController scrollController=ScrollController();
+  final dbHelper = DatabaseHelper();
 
   @override
   void initState() {
@@ -38,6 +40,7 @@ class _IndividualPageState extends State<IndividualPage> {
        });
       }
     });
+    loadMessages();
   }
 
   @override
@@ -62,7 +65,7 @@ class _IndividualPageState extends State<IndividualPage> {
         //listening
         socket.on("message",(data){
             print(data);
-            setMessage(data["message"], "destination");
+            setMessage(data["message"], "destination", data["sourceID"], data["targetID"]);
         });
 
       });
@@ -70,16 +73,45 @@ class _IndividualPageState extends State<IndividualPage> {
   }
 
   void sendMessage(String message,int sourceID,int targetID){
-     setMessage(message, "source");
-     socket.emit("message",{"message":message,"sourceID":sourceID,"targetID":targetID});
+    setMessage(message, "source", sourceID, targetID);
+    socket.emit("message", {"message": message, "sourceID": sourceID, "targetID": targetID});
   }
 
-  void setMessage(String message,String type){
+  void setMessage(String message,String type,int senderId,int receiverId) async {
     if (!mounted) return;
 
-    MessageModel messagemodel =MessageModel(message: message, type: type,time: DateTime.now().toString().substring(10,16));
+    MessageModel messagemodel = MessageModel(
+      senderId: senderId.toString(),
+      receiverId: receiverId.toString(),
+      read: false,
+      message: message,
+      type: type,
+      time: DateTime.now().toString().substring(10, 16),
+    );
+    await dbHelper.insertMessage(messagemodel);
     setState(() {
       messageModel.add(messagemodel);
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (scrollController.hasClients) {
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
+  Future<void> loadMessages() async {
+    List<MessageModel> loadedMessages = await dbHelper.getMessages(
+      widget.sourceChat.id.toString(),
+      widget.chatmodel.id.toString(),
+    );
+
+    setState(() {
+      messageModel = loadedMessages;
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
