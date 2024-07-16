@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chatapp/Screens/loginScreen.dart';
+import 'package:chatapp/Screens/CreateAccount.dart';
 
 class SpalshScreen extends StatefulWidget {
   const SpalshScreen({Key? key}) : super(key: key);
@@ -36,7 +37,7 @@ class _SpalshScreenState extends State<SpalshScreen> with SingleTickerProviderSt
     await Future.delayed(const Duration(seconds: 5), () {});
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const LoginPage()),
+      MaterialPageRoute(builder: (context) => const CreateAccount()),
     );
   }
 
@@ -46,7 +47,13 @@ class _SpalshScreenState extends State<SpalshScreen> with SingleTickerProviderSt
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        color: Colors.greenAccent,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.greenAccent, Colors.blueAccent],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: Align(
           alignment: Alignment.center,
           child: FadeTransition(
@@ -56,7 +63,7 @@ class _SpalshScreenState extends State<SpalshScreen> with SingleTickerProviderSt
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: 5),
+                    border: Border.all(color: Colors.white, width: 3),
                     shape: BoxShape.circle,
                   ),
                   child: ClipOval(
