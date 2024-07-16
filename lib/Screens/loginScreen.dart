@@ -22,7 +22,8 @@ class _LoginPageState extends State<LoginPage> {
     ChatModel(name: "Punchi", time: "12.00", icon: "person", currentMessage: "hello ", isGroup: false,id: 7),
     ChatModel(name: "LokuAmma", time: "13.00", icon: "person", currentMessage: "hello ", isGroup: false,id: 8),
     ChatModel(name: "Venumi", time: "14.00", icon: "person", currentMessage: "hello ", isGroup: false,id: 9),
-   // ChatModel(name: "UOM", time: "10.00", icon: "group", currentMessage: "hello ", isGroup: true),
+    ChatModel(name: "Temp", time: "14.00", icon: "person", currentMessage: "hello ", isGroup: false,id: 0777997689),
+    // ChatModel(name: "UOM", time: "10.00", icon: "group", currentMessage: "hello ", isGroup: true),
    // ChatModel(name: "FIT", time: "6.00", icon: "group", currentMessage: "hello ", isGroup: true),
    // ChatModel(name: "Dev stack", time: "10.00", icon: "group", currentMessage: "hello", isGroup: true),
   ];

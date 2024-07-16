@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Screens/HomeScreen.dart';
-import 'Screens/loginScreen.dart';
+import 'Screens/firstScreen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color(0xE6FDF9F9),
         hintColor: const Color(0xFF128C7E),
       ),
-      home:const LoginPage()
+      home:const SpalshScreen()
     );
   }
 }
