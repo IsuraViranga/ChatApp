@@ -1,17 +1,27 @@
 class ChatModel {
   String name;
-  String time;
-  String icon;
-  String currentMessage;
-  bool isGroup;
+  String time="2.00";
+  String icon="person";
+  String currentMessage="hii";
+  bool isGroup=false;
   int id;
 
   ChatModel({
     required this.name,
-    required this.time,
-    required this.icon,
-    required this.currentMessage,
-    required this.isGroup,
     required this.id
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'friendID': id,
+      'name': name,
+    };
+  }
+
+  factory ChatModel.fromMap(Map<String, dynamic> map) {
+    return ChatModel(
+      id: map['friendID'],
+      name: map['name'],
+    );
+  }
 }

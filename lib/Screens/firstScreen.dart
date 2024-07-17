@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:chatapp/Screens/loginScreen.dart';
 import 'package:chatapp/Screens/CreateAccount.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:chatapp/Screens/HomeScreen.dart';
+import 'package:chatapp/Model/ChatModel.dart';
+
 
 class SpalshScreen extends StatefulWidget {
   const SpalshScreen({Key? key}) : super(key: key);
@@ -24,7 +27,7 @@ class _SpalshScreenState extends State<SpalshScreen> with SingleTickerProviderSt
       parent: _controller,
       curve: Curves.easeIn,
     );
-    _navigateToHome();
+    _checkLog();
   }
 
   @override
@@ -33,12 +36,25 @@ class _SpalshScreenState extends State<SpalshScreen> with SingleTickerProviderSt
     super.dispose();
   }
 
-  void _navigateToHome() async {
-    await Future.delayed(const Duration(seconds: 5), () {});
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const CreateAccount()),
-    );
+  void _checkLog() async {
+    final prefs = await SharedPreferences.getInstance();
+    final ownerName = prefs.getString('ownerName');
+    final ownerMobile = prefs.getString('ownerMobile');
+
+    await Future.delayed(const Duration(seconds: 4), () {}); // Short delay for splash screen effect
+
+    if (ownerName != null && ownerMobile != null) {
+      ChatModel sourceChat =ChatModel(name: ownerName, id: int.parse(ownerMobile));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen(sourceChat: sourceChat)),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const CreateAccount()),
+      );
+    }
   }
 
   @override

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import '../Model/ChatModel.dart';
 import '../Pages/chatpage.dart';
 import 'package:chatapp/Screens/SerachPage.dart';
+import 'package:chatapp/Screens/AddFriend.dart';
 
 class HomeScreen extends StatefulWidget {
-  final List<ChatModel> chatmodels;
   final ChatModel sourceChat;
 
-  const HomeScreen({Key? key,required this.chatmodels,required this.sourceChat}) : super(key: key);
+  const HomeScreen({Key? key,required this.sourceChat}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -35,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                    Navigator.push(
                        context,
                        MaterialPageRoute(builder: (context) => searchPage(
-                           chatmodels:widget.chatmodels,
                            sourceChat:widget.sourceChat
                        ))
                    );
@@ -45,7 +44,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
           PopupMenuButton(
               onSelected:(value){
-                print(value);
+                if(value=="Add Contact"){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFriend(
+                      sourceChat:widget.sourceChat
+                  )));
+                }
               } ,
               itemBuilder: (BuildContext context){
             return const[
@@ -58,8 +61,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   child: Text("New broadcast"),
               ),
               PopupMenuItem(
-                  value:"ChatMe web",
-                  child: Text("ChatMe web"),
+                  value:"Add Contact",
+                  child: Text("Add Contact"),
               ),
               PopupMenuItem(
                   value:"Starred messages",
@@ -96,7 +99,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         children:[
           Text("camera"),
           ChatPage(
-              chatmodel:widget.chatmodels,
               sourceChat:widget.sourceChat
           ),
           Text("status"),

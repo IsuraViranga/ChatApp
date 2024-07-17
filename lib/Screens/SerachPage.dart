@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import '../Model/ChatModel.dart';
 import 'package:chatapp/Screens/HomeScreen.dart';
-
+import 'package:chatapp/sqliteDatabase/databaseHelper.dart';
 import '../customUI/CustomCard.dart';
 
 class searchPage extends StatefulWidget {
-  final List<ChatModel> chatmodels;
   final ChatModel sourceChat;
-  const searchPage({Key? key,required this.chatmodels,required this.sourceChat}) : super(key: key);
+  const searchPage({Key? key,required this.sourceChat}) : super(key: key);
 
   @override
   State<searchPage> createState() => _searchPageState();
@@ -17,21 +16,31 @@ class _searchPageState extends State<searchPage> {
   TextEditingController _textController =TextEditingController();
   bool isContain =false;
   List<ChatModel> filteredChats=[];
+  final dbHelper =DatabaseHelper();
+  late List<ChatModel> chatmodels=[];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    filteredChats=widget.chatmodels;
+    _getFriendList();
+  }
+
+  void _getFriendList() async {
+    final friends = await dbHelper.getFriends();  // Get friends list from database
+    setState(() {
+      chatmodels=friends;
+      filteredChats=friends;
+    });
   }
 
   void _filterChats(String enteredname){
     List<ChatModel> tempChatModels=[];
     if(enteredname.isEmpty){
-      tempChatModels=widget.chatmodels;
+      tempChatModels=chatmodels;
     }
     else{
-        tempChatModels=widget.chatmodels.where((chat){
+        tempChatModels=chatmodels.where((chat){
             return chat.name.toLowerCase().contains(enteredname.toLowerCase());
         }).toList();
     }

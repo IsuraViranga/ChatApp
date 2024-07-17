@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:chatapp/Model/MessageModel.dart';
+import 'package:chatapp/Model/ChatModel.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -19,7 +20,7 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), 'messageContainer.db');
     return await openDatabase(
       path,
-      version: 1,
+      version: 2, // increment version number to add the new table
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE messageContainer(
@@ -32,6 +33,38 @@ class DatabaseHelper {
             time TEXT
           )
         ''');
+        await db.execute('''
+          CREATE TABLE Owner(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            ownerID INTEGER
+          )
+        ''');
+        await db.execute('''
+          CREATE TABLE Friends(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            friendID INTEGER
+          )
+        ''');
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute('''
+            CREATE TABLE Owner(
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              name TEXT,
+              ownerID INTEGER
+            )
+          ''');
+          await db.execute('''
+          CREATE TABLE Friends(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            friendID INTEGER
+          )
+        ''');
+        }
       },
     );
   }
@@ -56,4 +89,41 @@ class DatabaseHelper {
       return MessageModel.fromMap(maps[i]);
     });
   }
+
+  // New methods for user creation
+  Future<void> insertOwner(Map<String, dynamic> owner) async {
+    final db = await database;
+    await db.insert(
+      'Owner',
+      owner,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    print("added");
+  }
+
+  Future<List<Map<String, dynamic>>> getOwner() async {
+    final db = await database;
+    return await db.query('Owner');
+  }
+
+  // New Methods for Friends table
+  Future<void> insertFriend(Map<String, dynamic> friend) async {
+    final db = await database;
+    await db.insert(
+      'Friends',
+      friend,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<ChatModel>> getFriends() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'Friends',
+    );
+    return List.generate(maps.length, (i) {
+      return ChatModel.fromMap(maps[i]);
+    });
+  }
+
 }

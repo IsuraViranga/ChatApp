@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:chatapp/Screens/loginScreen.dart';
 import 'package:chatapp/sqliteDatabase/databaseHelper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../Model/ChatModel.dart';
 import 'package:chatapp/Screens/HomeScreen.dart';
-import 'package:chatapp/Model/ChatModel.dart';
 
-class CreateAccount extends StatefulWidget {
-  const CreateAccount({Key? key}) : super(key: key);
+
+class AddFriend extends StatefulWidget {
+  final ChatModel sourceChat;
+  const AddFriend({Key? key,required this.sourceChat}) : super(key: key);
 
   @override
-  State<CreateAccount> createState() => _CreateAccountState();
+  State<AddFriend> createState() => _AddFriendState();
 }
 
-class _CreateAccountState extends State<CreateAccount> with SingleTickerProviderStateMixin {
+class _AddFriendState extends State<AddFriend> with SingleTickerProviderStateMixin {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -20,29 +20,24 @@ class _CreateAccountState extends State<CreateAccount> with SingleTickerProvider
 
   void _createAccount() async {
     if (_formKey.currentState!.validate()) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('ownerName', _nameController.text);
-      await prefs.setString('ownerMobile', _mobileController.text);
-
-      await dbhelper.insertOwner({
+      await dbhelper.insertFriend({
         'name': _nameController.text,
-        'ownerID': int.parse(_mobileController.text),
+        'friendID': int.parse(_mobileController.text),
       });
-
-      print('Account Created');
-      ChatModel sourceChat =ChatModel(name: _nameController.text, id: int.parse(_mobileController.text));
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen(sourceChat:sourceChat)),
+        MaterialPageRoute(builder: (context) => HomeScreen(sourceChat:widget.sourceChat)),
       );
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+
+      ),
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -57,11 +52,11 @@ class _CreateAccountState extends State<CreateAccount> with SingleTickerProvider
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 100),
+              const SizedBox(height: 50),
               const Text(
-                "Create Account",
+                "Add Contact",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 35,
                 ),
@@ -90,7 +85,7 @@ class _CreateAccountState extends State<CreateAccount> with SingleTickerProvider
                       children: [
                         FormTemplate(
                           icon: Icons.person,
-                          topic: " Name",
+                          topic: " Contact Name",
                           hint: "enter name",
                           controller: _nameController,
                           validator: (value) {
@@ -109,7 +104,7 @@ class _CreateAccountState extends State<CreateAccount> with SingleTickerProvider
                         const SizedBox(height: 20),
                         FormTemplate(
                           icon: Icons.phone,
-                          topic: " Mobile Number",
+                          topic: " Contact Mobile Number",
                           hint: "enter number",
                           controller: _mobileController,
                           validator: (value) {
@@ -135,7 +130,7 @@ class _CreateAccountState extends State<CreateAccount> with SingleTickerProvider
                               ),
                             ),
                             child: const Text(
-                              "Create",
+                              "Add",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -182,8 +177,8 @@ class FormTemplate extends StatelessWidget {
           Text(
             topic,
             style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
+              color: Colors.black,
+              fontSize: 17,
               fontWeight: FontWeight.bold,
             ),
           ),
